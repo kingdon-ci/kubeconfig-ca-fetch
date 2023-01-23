@@ -15,7 +15,10 @@ spec:
               imagePullPolicy: IfNotPresent
               args:
                 - "-v=3"
+                - --appID=284897
+                - --installationID=33438093
                 - --privateKeyPath=/etc/secret-volume/privatekey.pem
+                - --secretName=my-app-secret
               env:
                 - name: NAMESPACE
                   valueFrom:

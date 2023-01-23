@@ -1,4 +1,4 @@
-KO_DOCKER_REPO ?= darkowlzz
+KO_DOCKER_REPO ?= kingdonb
 TAG ?= latest
 
 tidy:
