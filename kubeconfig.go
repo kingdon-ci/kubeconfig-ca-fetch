@@ -51,7 +51,7 @@ func GetCertCaBase64(url string, client *http.Client) (ret string, err error) {
 
 func FillOutputMap(m map[string]string, out map[string]string, ch chan *Base64Result) {
 	// set doLog := true to enable logging to stderr
-	doLog := false
+	doLog := true
 	for i := 0; i < len(m); i++ {
 		c := <-ch
 		name := c.Name

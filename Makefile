@@ -4,8 +4,14 @@ TAG ?= latest
 tidy:
 	go mod tidy -v
 
-ko-build:
-	ko build --local ./cmd/kubeconfig-ca-fetch
+build:
+	go build ./cmd/kubeconfig-ca-fetch
 
-ko-publish:
-	KO_DOCKER_REPO=$(KO_DOCKER_REPO) ko build -B ./cmd/gh-app-secret -t $(TAG)
+clean:
+	rm -f kubeconfig-ca-fetch
+
+# ko-build:
+# 	ko build --local ./cmd/kubeconfig-ca-fetch
+#
+# ko-publish:
+# 	KO_DOCKER_REPO=$(KO_DOCKER_REPO) ko build -B ./cmd/gh-app-secret -t $(TAG)
