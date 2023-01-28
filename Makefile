@@ -1,14 +1,20 @@
 KO_DOCKER_REPO ?= kingdonb
 TAG ?= latest
 
+all: tidy build kube.config
+
 tidy:
 	go mod tidy -v
 
 build:
 	go build ./cmd/kubeconfig-ca-fetch
 
+kube.config:
+	./kubeconfig-ca-fetch > kube.config
+
 clean:
 	rm -f kubeconfig-ca-fetch
+	rm -f kube.config
 
 # ko-build:
 # 	ko build --local ./cmd/kubeconfig-ca-fetch

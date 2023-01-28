@@ -1,7 +1,17 @@
 # kubeconfig-ca-fetch
 
-Print a new kubeconfig on stdout, optionally print some messages about failures
-to the stderr.
+Print a new kubeconfig on stdout, optionally print some messages about timing and
+failures to the stderr.
+
+# tl;dr
+
+This is probably not what you want. But if you know who you are, and you need
+this, then see also: [Howto kubeconfig][Kubelogin prereqs], for team members
+in the `kingdon-ci:weave-gitops` GitHub OIDC unit.
+
+Welcome to use this tool for learning, or adapt the code for other purposes.
+
+# About
 
 This is a command you should only need to run once. It connects to many
 clusters and saves the certificate authority data that they present in a
@@ -16,9 +26,11 @@ Kubernetes API services, and (generally speaking, insecurely) trusts that all
 the kube APIs are valid in order to generate a kubeconfig for all the clusters
 that our OIDC access token will authorize.
 
-[Use kubelogin][] to get an id-token.
+Use one of the supported methods to [download kubelogin][Kubelogin prereqs].
+[Run kubelogin][] to get an id-token.
 
-[Use kubelogin]: https://howto.howard.moomboo.space/#tldr-run-kubelogin
+[Kubelogin prereqs]: https://howto.howard.moomboo.space/#prerequisites
+[Run kubelogin]: https://howto.howard.moomboo.space/#tldr-run-kubelogin
 
 ### Safety
 
@@ -48,4 +60,10 @@ To build this, you can run:
 
 ```
 go install github.com/kingdon-ci/kubeconfig-ca-fetch/cmd/kubeconfig-ca-fetch@latest
+```
+
+or if you cloned this repo locally, try:
+
+```bash
+make tidy && make build
 ```
