@@ -62,7 +62,7 @@ func FillOutputMap(m map[string]string, out map[string]string, ch chan *Base64Re
 			if c.Cert == "" {
 				log.Printf("Failed to reach %s (%s) after %d ms\n", c.Name, c.Url, c.time_/1e6)
 			} else {
-				log.Printf("Reached %s in %dms\n", c.Url, c.time_/1e6)
+				log.Printf("Reached %s in %d ms\n", c.Url, c.time_/1e6)
 			}
 		}
 	}

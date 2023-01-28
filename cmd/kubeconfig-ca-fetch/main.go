@@ -41,6 +41,13 @@ func main() {
 		"limnocentral":   "limnocentral.turkey.local",
 		"management":     "loft.loft.svc.cluster.local",
 	}
+	out := map[string]string{}
+
+	doHeavyLifting(client, m, out)
+	printKubeconfig(m, out)
+}
+
+func doHeavyLifting(client *http.Client, m map[string]string, out map[string]string) {
 	// result holds a cert from certs[0], or an empty string for cert
 	ch := make(chan *kcf.Base64Result)
 
@@ -53,9 +60,7 @@ func main() {
 
 	// m is the "input" map and it has the same length as the finished output map
 	// but failed connections will be empty certs, get omitted from the kubeconfig
-	out := map[string]string{}
 	kcf.FillOutputMap(m, out, ch)
-	printKubeconfig(m, out)
 }
 
 func printKubeconfig(min map[string]string, mout map[string]string) {
