@@ -1,4 +1,4 @@
-module github.com/darkowlzz/github-app-secret
+module github.com/kingdon-ci/kubeconfig-ca-fetch
 
 go 1.19
 

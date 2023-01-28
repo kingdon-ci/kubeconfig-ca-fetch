@@ -1,35 +1,14 @@
 package main
 
 import (
-	"bytes"
 	"crypto/tls"
-	b64 "encoding/base64"
 	"fmt"
-	"log"
 	"net"
 	"net/http"
 	"time"
 
-	"encoding/pem"
-
-	"go.step.sm/crypto/pemutil"
+	kcf "github.com/kingdon-ci/kubeconfig-ca-fetch"
 )
-
-type Base64Result struct {
-	Name  string
-	Url   string
-	Cert  string
-	time_ int64
-}
-
-func getBase64Result(client *http.Client, name string, url string, ch chan *Base64Result) {
-	result := Base64Result{name, url, "", time.Now().UnixNano()}
-
-	result.Cert, _ = getCertCaBase64(url, client)
-	result.time_ = time.Now().UnixNano() - result.time_
-
-	ch <- &result
-}
 
 var timeout = time.Duration(2 * time.Second)
 
@@ -63,60 +42,20 @@ func main() {
 		"management":     "loft.loft.svc.cluster.local",
 	}
 	// result holds a cert from certs[0], or an empty string for cert
-	ch := make(chan *Base64Result)
+	ch := make(chan *kcf.Base64Result)
 
 	// Call http routine as an asynchronous function
 	for k, v := range m {
 		url := fmt.Sprintf("https://%s", v)
 		// getBase64Result always returns a result regardless of failure
-		go getBase64Result(client, k, url, ch)
+		go kcf.GetBase64Result(client, k, url, ch)
 	}
 
 	// m is the "input" map and it has the same length as the finished output map
 	// but failed connections will be empty certs, get omitted from the kubeconfig
 	out := map[string]string{}
-	fillOutputMap(m, out, ch)
+	kcf.FillOutputMap(m, out, ch)
 	printKubeconfig(m, out)
-}
-
-func getCertCaBase64(url string, client *http.Client) (ret string, err error) {
-	resp, err := client.Get(url)
-	if err != nil {
-		return "", err
-	}
-
-	certs := resp.TLS.PeerCertificates
-	p, err := pemutil.Serialize(certs[0])
-	if err != nil {
-		return "", err
-	}
-	var buf bytes.Buffer
-	err = pem.Encode(&buf, p)
-	if err != nil {
-		return "", err
-	}
-
-	str := b64.StdEncoding.EncodeToString(buf.Bytes())
-	return str, nil
-}
-
-func fillOutputMap(m map[string]string, out map[string]string, ch chan *Base64Result) {
-	// set doLog := true to enable logging to stderr
-	doLog := false
-	for i := 0; i < len(m); i++ {
-		c := <-ch
-		name := c.Name
-		cert := c.Cert
-		out[name] = cert
-		// Only print to stderr if logging is enabled
-		if doLog {
-			if c.Cert == "" {
-				log.Printf("Failed to reach %s (%s) after %d ms\n", c.Name, c.Url, c.time_/1e6)
-			} else {
-				log.Printf("Reached %s in %dms\n", c.Url, c.time_/1e6)
-			}
-		}
-	}
 }
 
 func printKubeconfig(min map[string]string, mout map[string]string) {
