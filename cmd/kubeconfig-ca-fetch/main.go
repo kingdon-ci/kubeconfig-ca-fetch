@@ -39,7 +39,7 @@ func main() {
 		"somtochi":       "somtochi.turkey.local",
 		"another-test":   "another-test.turkey.local",
 		"limnocentral":   "limnocentral.turkey.local",
-		"management":     "loft.loft.svc.cluster.local",
+		"management":     "10.17.12.127:6443",
 	}
 	out := map[string]string{}
 
