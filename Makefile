@@ -21,3 +21,16 @@ clean:
 #
 # ko-publish:
 # 	KO_DOCKER_REPO=$(KO_DOCKER_REPO) ko build -B ./cmd/gh-app-secret -t $(TAG)
+
+tldr: kube.config
+	chmod 600 kube.config
+	export KUBECONFIG=`pwd`/kube.config
+	kubelogin
+	kubectl get nodes
+
+supertldr: kube.config
+	# !! Overwrites your ~/.kube/config
+	chmod 600 kube.config
+	mv kube.config $(HOME)/.kube/config
+	kubelogin
+	kubectl get nodes
