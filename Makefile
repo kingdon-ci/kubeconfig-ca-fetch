@@ -1,7 +1,7 @@
 KO_DOCKER_REPO ?= kingdonb
 TAG ?= latest
 
-all: tidy build kube.config
+all: tidy build
 
 install: tidy build
 	go install github.com/kingdon-ci/kubeconfig-ca-fetch/cmd/kubeconfig-ca-fetch@latest
