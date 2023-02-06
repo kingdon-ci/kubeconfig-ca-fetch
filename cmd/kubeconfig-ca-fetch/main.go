@@ -34,6 +34,7 @@ func main() {
 		"hephy-stg":      "hephy-stg.turkey.local",
 		"howard-space":   "howard.moomboo.space",
 		"howard-stage":   "howard.moomboo.stage",
+		"newexample":     "newexample.howard.moomboo.space",
 		"moo":            "moo-cluster.turkey.local",
 		"vcluster":       "vcluster.turkey.local",
 		"somtochi":       "somtochi.turkey.local",
