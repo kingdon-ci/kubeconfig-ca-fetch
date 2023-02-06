@@ -3,6 +3,9 @@ TAG ?= latest
 
 all: tidy build kube.config
 
+install: tidy build
+	go install github.com/kingdon-ci/kubeconfig-ca-fetch/cmd/kubeconfig-ca-fetch@latest
+
 tidy:
 	go mod tidy -v
 
