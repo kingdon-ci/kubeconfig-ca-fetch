@@ -35,25 +35,32 @@ func GetCertCaBase64(url string, client *http.Client) (ret string, err error) {
 		return "", err
 	}
 
+	// The server will give you its entire cert chain.
 	certs := resp.TLS.PeerCertificates
-	if len(certs) > 1 {
-		// Don't use certs[0], it is an ephemeral cert that gets rotated regularly.
-		// Instead, certs[1] has a self-signed cert which we can hope remains relatively stable.
-		p, err := pemutil.Serialize(certs[1])
-		if err != nil {
-			return "", err
-		}
-		var buf bytes.Buffer
-		err = pem.Encode(&buf, p)
-		if err != nil {
-			return "", err
-		}
 
-		str := b64.StdEncoding.EncodeToString(buf.Bytes())
-		return str, nil
-	} else {
+	// Some valid APIs won't have an ephemeral cert, they might not be rotating (?)
+	// Then, go ahead and try certs[0] since it will probably also work. Probably.
+	p, err := pemutil.Serialize(certs[0])
+
+	// The above values are discarded in this branch:
+	if len(certs) > 1 {
+		// If there is a parent cert, prefer certs[1], (it is the self-signed cert.)
+		// Use it instead, of certs[0] which is rotated and will be expired quickly.
+		p, err = pemutil.Serialize(certs[1])
+	}
+	if err != nil {
 		return "", err
 	}
+	// Encode the certificate as a PEM data
+	var buf bytes.Buffer
+	err = pem.Encode(&buf, p)
+	if err != nil {
+		return "", err
+	}
+
+	// Return the encoded PEM as base64 standard encoding
+	str := b64.StdEncoding.EncodeToString(buf.Bytes())
+	return str, nil
 }
 
 func FillOutputMap(m map[string]string, out map[string]string, ch chan *Base64Result) {
