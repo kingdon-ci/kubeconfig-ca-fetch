@@ -29,7 +29,8 @@ tldr: kube.config
 	kubectl get nodes
 
 supertldr: kube.config
-	# !! Overwrites your ~/.kube/config
+	# !! Overwrites your ~/.kube/config (Ctrl+C to abort)
+	sleep 3
 	chmod 600 kube.config
 	mv kube.config $(HOME)/.kube/config
 	kubelogin
