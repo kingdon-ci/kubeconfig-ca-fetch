@@ -36,18 +36,22 @@ func GetCertCaBase64(url string, client *http.Client) (ret string, err error) {
 	}
 
 	certs := resp.TLS.PeerCertificates
-	p, err := pemutil.Serialize(certs[0])
-	if err != nil {
-		return "", err
-	}
-	var buf bytes.Buffer
-	err = pem.Encode(&buf, p)
-	if err != nil {
-		return "", err
-	}
+	if len(certs) > 1 {
+		p, err := pemutil.Serialize(certs[1])
+		if err != nil {
+			return "", err
+		}
+		var buf bytes.Buffer
+		err = pem.Encode(&buf, p)
+		if err != nil {
+			return "", err
+		}
 
-	str := b64.StdEncoding.EncodeToString(buf.Bytes())
-	return str, nil
+		str := b64.StdEncoding.EncodeToString(buf.Bytes())
+		return str, nil
+	} else {
+		return "", err
+	}
 }
 
 func FillOutputMap(m map[string]string, out map[string]string, ch chan *Base64Result) {
