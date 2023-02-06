@@ -37,6 +37,8 @@ func GetCertCaBase64(url string, client *http.Client) (ret string, err error) {
 
 	certs := resp.TLS.PeerCertificates
 	if len(certs) > 1 {
+		// Don't use certs[0], it is an ephemeral cert that gets rotated regularly.
+		// Instead, certs[1] has a self-signed cert which we can hope remains relatively stable.
 		p, err := pemutil.Serialize(certs[1])
 		if err != nil {
 			return "", err
