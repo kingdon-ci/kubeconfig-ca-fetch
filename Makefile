@@ -15,8 +15,11 @@ build:
 kube.config:
 	./kubeconfig-ca-fetch > kube.config
 
-clean:
+mrproper:
 	rm -f kubeconfig-ca-fetch
+	rm -f kube.config
+
+clean:
 	rm -f kube.config
 
 # ko-build:
@@ -26,14 +29,16 @@ clean:
 # 	KO_DOCKER_REPO=$(KO_DOCKER_REPO) ko build -B ./cmd/gh-app-secret -t $(TAG)
 
 tldr: kube.config
-	chmod 600 kube.config
-	export KUBECONFIG=`pwd`/kube.config
-	kubelogin
-	kubectl get nodes
+	( \
+	chmod 600 kube.config; \
+	export KUBECONFIG=`pwd`/kube.config ; \
+	kubelogin; \
+	kubectl get nodes; \
+	)
 
 supertldr: kube.config
 	# !! Overwrites your ~/.kube/config (Ctrl+C to abort)
-	sleep 3
+	sleep 5
 	chmod 600 kube.config
 	mv kube.config $(HOME)/.kube/config
 	kubelogin
