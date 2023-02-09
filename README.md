@@ -27,10 +27,10 @@ the kube APIs are valid in order to generate a kubeconfig for all the clusters
 that our OIDC access token will authorize.
 
 Use one of the supported methods to [download kubelogin][Kubelogin prereqs].
-[Run kubelogin][] to get an id-token.
+The exec mode configuration will [run kubelogin][] to get an id-token.
 
 [Kubelogin prereqs]: https://howto.howard.moomboo.space/#prerequisites
-[Run kubelogin]: https://howto.howard.moomboo.space/#tldr-run-kubelogin
+[run kubelogin]: https://howto.howard.moomboo.space/#tldr-run-kubelogin
 
 ### Safety
 

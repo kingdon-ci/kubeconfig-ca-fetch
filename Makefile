@@ -32,14 +32,13 @@ tldr: kube.config
 	( \
 	chmod 600 kube.config; \
 	export KUBECONFIG=`pwd`/kube.config ; \
-	kubelogin; \
 	kubectl get nodes; \
 	)
 
 supertldr: kube.config
 	# !! Overwrites your ~/.kube/config (Ctrl+C to abort)
-	sleep 5
+	sleep 2
 	chmod 600 kube.config
 	mv kube.config $(HOME)/.kube/config
-	kubelogin
+	# kubelogin
 	kubectl get nodes
