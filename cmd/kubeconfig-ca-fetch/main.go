@@ -91,13 +91,19 @@ func printKubeconfig(min map[string]string, mout map[string]string) {
 preferences: {}
 current-context: howard-space
 users:
-  - name: kubelogin
-    user:
-        auth-provider:
-            config:
-                client-id: weave-gitops
-                client-secret: AiAImuXKhoI5ApvKWF988txjZ+6rG3S7o6X5En
-                extra-scopes: groups
-                idp-issuer-url: https://dex.howard.moomboo.space
-            name: oidc`)
+- name: kubelogin
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1beta1
+      args:
+      - oidc-login
+      - get-token
+      - --oidc-issuer-url=https://dex.howard.moomboo.space
+      - --oidc-client-id=weave-gitops
+      - --oidc-client-secret=AiAImuXKhoI5ApvKWF988txjZ+6rG3S7o6X5En
+      - --oidc-extra-scope=groups
+      - --oidc-extra-scope=offline_access
+      command: kubectl
+      env: null
+      provideClusterInfo: false`)
 }
