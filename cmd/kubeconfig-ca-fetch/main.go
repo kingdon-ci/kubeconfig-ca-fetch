@@ -99,7 +99,7 @@ users:
       - oidc-login
       - get-token
       - --oidc-issuer-url=https://dex.howard.moomboo.space
-      - --oidc-client-id=weave-gitops
+      - --oidc-client-id=wg-kubelogin
       - --oidc-client-secret=AiAImuXKhoI5ApvKWF988txjZ+6rG3S7o6X5En
       - --oidc-extra-scope=groups
       - --oidc-extra-scope=offline_access
