@@ -12,7 +12,7 @@ tidy:
 build:
 	go build ./cmd/kubeconfig-ca-fetch
 
-kube.config:
+kube.config: clean
 	./kubeconfig-ca-fetch > kube.config
 
 mrproper:
