@@ -30,6 +30,7 @@ func main() {
 	m := map[string]string{
 		"cluster-01":     "cluster-01.turkey.local",
 		"cluster-02":     "cluster-02.turkey.local",
+		"cluster-03":     "cluster-03.turkey.local",
 		"demo-cluster-2": "demo-cluster-2.turkey.local",
 		"demo-cluster":   "demo-cluster.turkey.local",
 		"hephy-stg":      "hephy-stg.turkey.local",
