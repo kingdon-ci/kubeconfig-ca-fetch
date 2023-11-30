@@ -28,6 +28,7 @@ func main() {
 		},
 	}
 	m := map[string]string{
+		"botkube-demo":   "botkube-demo.turkey.local",
 		"cluster-01":     "cluster-01.turkey.local",
 		"cluster-02":     "cluster-02.turkey.local",
 		"cluster-03":     "cluster-03.turkey.local",
