@@ -42,6 +42,8 @@ func GetCertCaBase64(url string, client *http.Client) (ret string, err error) {
 	// Then, go ahead and try certs[0] since it will probably also work. Probably.
 	p, err := pemutil.Serialize(certs[0])
 
+  log.Printf("%v has %v certificates", url, len(certs))
+
 	// The above values are discarded in this branch:
 	if len(certs) > 1 {
 		// If there is a parent cert, prefer certs[1], (it is the self-signed cert.)
