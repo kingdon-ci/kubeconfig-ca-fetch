@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"sync"
 	"time"
 
 	kcf "github.com/kingdon-ci/kubeconfig-ca-fetch"
@@ -55,13 +56,17 @@ func main() {
 func doHeavyLifting(client *http.Client, m map[string]string, out map[string]string) {
 	// result holds a cert from certs[0], or an empty string for cert
 	ch := make(chan *kcf.Base64Result)
+	wg := sync.WaitGroup{}
 
 	// Call http routine as an asynchronous function
 	for k, v := range m {
+		wg.Add(1)
 		url := fmt.Sprintf("https://%s", v)
 		// getBase64Result always returns a result regardless of failure
-		go kcf.GetBase64Result(client, k, url, ch)
+		go kcf.GetBase64Result(client, k, url, ch, &wg)
 	}
+
+	wg.Wait()
 
 	// m is the "input" map and it has the same length as the finished output map
 	// but failed connections will be empty certs, get omitted from the kubeconfig

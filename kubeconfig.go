@@ -6,6 +6,7 @@ import (
 	b64 "encoding/base64"
 	"log"
 	"net/http"
+	"sync"
 	"time"
 
 	"encoding/pem"
@@ -13,10 +14,10 @@ import (
 	"go.step.sm/crypto/pemutil"
 )
 
-func GetBase64Result(client *http.Client, name string, url string, ch chan *Base64Result) {
+func GetBase64Result(client *http.Client, name string, url string, ch chan *Base64Result, wg *sync.WaitGroup) {
 	result := Base64Result{name, url, "", time.Now().UnixNano()}
 
-	result.Cert, _ = GetCertCaBase64(url, client)
+	result.Cert, _ = GetCertCaBase64(url, client, wg)
 	result.time_ = time.Now().UnixNano() - result.time_
 
 	ch <- &result
@@ -29,7 +30,8 @@ type Base64Result struct {
 	time_ int64
 }
 
-func GetCertCaBase64(url string, client *http.Client) (ret string, err error) {
+func GetCertCaBase64(url string, client *http.Client, wg *sync.WaitGroup) (ret string, err error) {
+	defer wg.Done()
 	resp, err := client.Get(url)
 	if err != nil {
 		return "", err
@@ -42,7 +44,7 @@ func GetCertCaBase64(url string, client *http.Client) (ret string, err error) {
 	// Then, go ahead and try certs[0] since it will probably also work. Probably.
 	p, err := pemutil.Serialize(certs[0])
 
-  log.Printf("%v has %v certificates", url, len(certs))
+	log.Printf("%v has %v certificates", url, len(certs))
 
 	// The above values are discarded in this branch:
 	if len(certs) > 1 {
