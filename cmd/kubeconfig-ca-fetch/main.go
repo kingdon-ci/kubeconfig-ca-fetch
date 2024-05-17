@@ -29,7 +29,7 @@ func main() {
 		},
 	}
 	m := map[string]string{
-		"talos-dev":      "10.17.12.105:6443",
+		"talos-dev":      "10.17.13.253:6443",
 		"botkube-demo":   "botkube-demo.turkey.local",
 		"cluster-01":     "cluster-01.turkey.local",
 		"cluster-02":     "cluster-02.turkey.local",
