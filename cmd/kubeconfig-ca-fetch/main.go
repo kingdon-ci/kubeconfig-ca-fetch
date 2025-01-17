@@ -11,7 +11,7 @@ import (
 	kcf "github.com/kingdon-ci/kubeconfig-ca-fetch"
 )
 
-var timeout = time.Duration(2 * time.Second)
+var timeout = time.Duration(10 * time.Second)
 
 func dialTimeout(network, addr string) (net.Conn, error) {
 	return net.DialTimeout(network, addr, timeout)
