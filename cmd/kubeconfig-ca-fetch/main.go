@@ -29,23 +29,12 @@ func main() {
 		},
 	}
 	m := map[string]string{
-		"talos-dev":      "10.17.13.253:6443",
-		"botkube-demo":   "botkube-demo.turkey.local",
-		"cluster-01":     "cluster-01.turkey.local",
-		"cluster-02":     "cluster-02.turkey.local",
-		"cluster-03":     "cluster-03.turkey.local",
-		"demo-cluster-2": "demo-cluster-2.turkey.local",
-		"demo-cluster":   "demo-cluster.turkey.local",
-		"hephy-stg":      "hephy-stg.turkey.local",
-		"howard-space":   "howard.moomboo.space",
-		"howard-stage":   "howard.moomboo.stage",
-		"newexample":     "newexample.howard.moomboo.space",
+		"admin@cozy":     "10.17.13.253:6443",
+		"harvey":         "harvey.test.moomboo.space",
+		"test":           "kubernetes-cluster.test.moomboo.space",
 		"moo":            "moo-cluster.turkey.local",
-		"vcluster":       "vcluster.turkey.local",
-		"somtochi":       "somtochi.turkey.local",
-		"another-test":   "another-test.turkey.local",
-		"limnocentral":   "limnocentral.turkey.local",
-		"management":     "10.17.12.127:6443",
+		"mop":            "mop-cluster.turkey.local",
+		"vcluster":       "vcluster-cluster.turkey.local",
 	}
 	out := map[string]string{}
 
@@ -98,7 +87,7 @@ func printKubeconfig(min map[string]string, mout map[string]string) {
 
 	fmt.Println(`kind: Config
 preferences: {}
-current-context: howard-space
+current-context: moo
 users:
 - name: kubelogin
   user:
@@ -107,7 +96,7 @@ users:
       args:
       - oidc-login
       - get-token
-      - --oidc-issuer-url=https://dex.howard.moomboo.space
+      - --oidc-issuer-url=https://dex.harvey.moomboo.space
       - --oidc-client-id=wg-kubelogin
       - --oidc-client-secret=AiAImuXKhoI5ApvKWF988txjZ+6rG3S7o6X5En
       - --oidc-extra-scope=groups
